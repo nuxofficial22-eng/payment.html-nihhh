@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Nuxmarket</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #0ea5e9);
+      color: #f1f5f9;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, #38bdf8, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: #cbd5e1;
+      font-size: 1.15rem;
+      text-align: center;
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 36px;
+      width: 400px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.4);
+      backdrop-filter: blur(20px);
+    }
+
+    .method {
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 28px;
+      transition: 0.3s;
+    }
+
+    .method:hover {
+      background: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    .method-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .method img {
+      width: 37px;
+      border-radius: 50%;
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .number-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .number {
+      font-family: monospace;
+      font-size: 1.25rem;
+      background: rgba(255,255,255,0.12);
+      padding: 12px 16px;
+      border-radius: 10px;
+      letter-spacing: 0.5px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .an-text {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(90deg, #06b6d4, #3b82f6);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: 0.25s;
+      flex-shrink: 0;
+    }
+
+    .btn:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    .qris {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .qris img {
+      width: 260px;
+      border-radius: 14px;
+      border: 2px solid rgba(255,255,255,0.2);
+      margin-top: 12px;
+      box-shadow: 0 0 22px rgba(56,189,248,0.3);
+    }
+
+    .download-btn { margin-top: 16px; width: 100%; justify-content: center; }
+
+    .footer { text-align: center; margin-top: 30px; color: #94a3b8; font-size: 0.95rem; }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      background: rgba(15,23,42,0.95);
+      color: #e0f2fe;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      display: none;
+      box-shadow: 0 4px 30px rgba(14,165,233,0.3);
+      animation: fadein 0.3s;
+    }
+
+    @keyframes fadein { 
+      from { opacity: 0; transform: translateY(10px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
+
+    #fullscreenQR {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    #fullscreenQR img { 
+      max-width: 90%; 
+      max-height: 90%; 
+      border-radius: 14px; 
+      box-shadow: 0 0 40px rgba(0,0,0,0.5); 
+    }
+
+    #fullscreenQR .close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: white;
+      transition: 0.25s;
+    }
+
+    @media(max-width:480px) {
+      .card { width: 95%; padding: 28px; }
+      h1 { font-size: 2rem; }
+      .number { font-size: 1.1rem; }
+      .qris img { width: 220px; }
+      .btn { font-size: 0.95rem; padding: 10px 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Payment Nuxmarket</h1>
+  <p>Silahkan pilih metode pembayaran dan bayar, setelah itu kirim bukti ke admin.</p>
+
+  <div class="card">
+
+    <div class="method">
+      <div class="method-header">
+        <img src="https://img1.pixhost.to/images/9935/657716171_spidernux.jpg">
+        <div class="title">GoPay</div>
+      </div>
+      <div class="number-row">
+        <div class="number" id="gopayNum">085817240944</div>
+        <button class="btn" onclick="copyText('gopayNum')">Salin</button>
+      </div>
+      <div class="an-text">Atas nama : Nuxmarket</div>
+    </div>
+
+    <div class="method">
+      <div class="method-header">
+        <img src="https://img1.pixhost.to/images/9935/657714738_spidernux.jpg">
+        <div class="title">DANA</div>
+      </div>
+      <div class="number-row">
+        <div class="number" id="danaNum">0895365649947</div>
+        <button class="btn" onclick="copyText('danaNum')">Salin</button>
+      </div>
+      <div class="an-text">Atas nama : Nuxmarketz</div>
+    </div>
+
+    <div class="qris">
+      <div class="title">QRIS</div>
+      <img id="qrisImg" src="https://img1.pixhost.to/images/9935/657714523_spidernux.jpg">
+      <button class="btn download-btn" onclick="downloadChris()">Download</button>
+      <button class="btn download-btn" onclick="viewFullScreenQR()">Perbesar</button>
+    </div>
+
+  </div>
+
+
+  <div style="margin-top: 30px; display: flex; justify-content: center; gap: 14px;">
+
+  
+    <a href="https://wa.me/6285817240944" target="_blank" style="text-decoration:none;">
+      <button class="btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+          <path d="M20.52 3.48C18.24 1.2 15.24 0 12 0 5.37 0 .02 5.37.02 12c0 2.11.55 4.17 1.6 6L0 24l6.25-1.6c1.8.98 3.85 1.5 5.95 1.5h.01c6.63 0 12-5.37 12-12 0-3.24-1.26-6.26-3.48-8.52zM12.2 21.3c-1.81 0-3.58-.49-5.12-1.42l-.37-.22-3.71.95.99-3.61-.24-.37A9.06 9.06 0 0 1 2.63 12c0-5.24 4.28-9.52 9.55-9.52 2.55 0 4.95 1 6.75 2.8a9.42 9.42 0 0 1 2.77 6.72c0 5.24-4.28 9.52-9.5 9.5zm5.07-6.78c-.28-.14-1.65-.81-1.9-.9-.25-.1-.43-.14-.61.14-.18.28-.7.9-.86 1.08-.16.18-.32.2-.6.07-.28-.14-1.18-.43-2.24-1.38-.83-.74-1.37-1.65-1.53-1.93-.16-.28-.02-.43.12-.57.12-.12.28-.32.42-.48.14-.16.18-.28.28-.46.1-.18.05-.34-.02-.48-.07-.14-.61-1.47-.83-2.02-.22-.53-.44-.46-.61-.46h-.52c-.18 0-.48.07-.73.34-.25.28-.96.94-.96 2.28 0 1.34.98 2.63 1.12 2.81.14.18 1.93 2.95 4.72 4.14 2.79 1.19 2.79.8 3.29.75.5-.05 1.65-.67 1.88-1.32.23-.65.23-1.21.16-1.33-.07-.11-.25-.18-.53-.32z"/>
+        </svg>
+        WhatsApp
+      </button>
+    </a>
+
+  
+    <a href="https://t.me/thenuxoffc" target="_blank" style="text-decoration:none;">
+      <button class="btn">
+        <svg width="20" height="20" viewBox="0 0 240 240" fill="white">
+          <path d="M120,0C53.73,0,0,53.73,0,120s53.73,120,120,120,120-53.73,120-120S186.27,0,120,0Zm58.09,81.83-22,103.38c-1.66,7.33-6,9.13-12.16,5.68l-33.58-24.74-16.21,15.61c-1.79,1.79-3.29,3.29-6.74,3.29l2.4-34.09,61.93-55.91c2.69-2.4-.59-3.73-4.18-1.33l-76.53,48.18L39.6,127.68c-7.27-2.27-7.46-7.27,1.6-10.72l113.35-43.77C162.69,70.23,168.68,73.53,178.09,81.83Z"/>
+        </svg>
+        Telegram
+      </button>
+    </a>
+
+  </div>
+
+  <div class="footer">© 2025 Nux Official | Nuxmarket</div>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="fullscreenQR">
+    <button class="close-btn" onclick="closeFullScreenQR()">✕</button>
+    <img id="fullscreenQRImg">
+  </div>
+
+  <script>
+    function copyText(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text);
+      showToast("Nomor disalin: " + text);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 2500);
+    }
+
+    function downloadChris() {
+      const link = document.createElement('a');
+      link.href = "https://img1.pixhost.to/images/10286/662707334_fixzzxcpanel.jpg";
+      link.download = "Nuxmarketqris.jpg";
+      link.click();
+      showToast("Gambar QRIS berhasil didownload!");
+    }
+
+    function viewFullScreenQR() {
+      document.getElementById('fullscreenQRImg').src = document.getElementById('qrisImg').src;
+      document.getElementById('fullscreenQR').style.display = 'flex';
+    }
+
+    function closeFullScreenQR() {
+      document.getElementById('fullscreenQR').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
